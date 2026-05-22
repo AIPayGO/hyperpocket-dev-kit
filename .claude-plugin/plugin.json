@@ -1,0 +1,6 @@
+{
+  "name": "hyperpocket-dev-kit",
+  "version": "0.1.0",
+  "description": "Hyperpocket team AI agent commands and setup tooling (Claude Code)",
+  "author": { "name": "Hyperpocket Team" }
+}

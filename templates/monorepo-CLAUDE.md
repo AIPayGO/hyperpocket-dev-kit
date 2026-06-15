@@ -24,6 +24,8 @@ This workspace uses `hyperpocket-dev-kit` for shared slash commands and plugin c
 
 Each service also has its own `CLAUDE.md` with deeper context — read it when working in that service.
 
+**Learning capture is automated.** Put durable, non-obvious learnings in a `## Learnings for CLAUDE.md` section of every PR description (see Shipping & Learning Capture below). The nightly learnings-harvest routine (`hyperpocket-dev-kit/routines/`) folds them into the right CLAUDE.md automatically (auto-merging its doc PR when green), so the docs improve over time without a manual step.
+
 ## Core Domain Concepts
 
 ### Double-Entry Ledger
@@ -55,6 +57,19 @@ All PRs require a code review before merge. Run `/code-review` before requesting
 1. **Architect** — plan what changes, get approval before coding
 2. **Code** — implement the approved plan
 3. **Review** — run `/code-review` as background agent; surface findings if real issues found
+
+### Shipping & Learning Capture (Mandatory)
+
+Ship every non-trivial change the same way, on every machine — only the *promote* step differs per repo because deploy strategies differ:
+
+1. Work on a feature branch (never hand-push to a deploy branch).
+2. Open a PR into the repo's integration branch and let CI gate it.
+3. **Verify on staging** before promoting to production.
+4. **Promote using that repo's strategy:**
+   - `hyperpocket-api` → merge to `uat`, then tag `vX.Y.Z-rc.N` (→ staging) and `vX.Y.Z` (→ prod). Merging `uat` does **not** deploy.
+   - `hyperpocket-portal` → merge to `staging` (Cloudflare Pages auto-deploys).
+   - `hyperpocket-infra` → merge to `main` (CI runs `tf-apply`).
+5. **Record durable learnings in the PR description** under a `## Learnings for CLAUDE.md` section (the PR template seeds it; default `None`). Capture only non-obvious, reusable facts — the same bar as a CLAUDE.md edit — naming the file/area each belongs in. The nightly learnings-harvest routine (`hyperpocket-dev-kit/routines/`) folds these into the docs automatically, so this section *is* how knowledge compounds. Leave it `None` rather than padding it.
 
 ### Testing
 

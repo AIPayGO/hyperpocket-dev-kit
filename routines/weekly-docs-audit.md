@@ -1,12 +1,12 @@
 # Weekly docs audit
 
 - **Cron (UTC):** `0 9 * * 5` (Fri 09:00)
-- **Output:** PRs (one per repo with real issues) + optional chat summary
+- **Output:** PRs (one per repo with real issues) + Slack (shared dev-digest) summary
 - **Never merges** — every change is reviewed via PR.
 
 The accuracy/prune counterpart to the nightly learnings harvest: the harvest *adds* knowledge, this keeps the docs *accurate and lean*. Keep both.
 
-Paste this prompt when creating the routine; substitute `<DEV_DIGEST_WEBHOOK>` (or drop the chat step if Hyperpocket has no webhook).
+Paste this prompt when creating the routine; substitute `<DEV_DIGEST_SLACK_WEBHOOK>`.
 
 ```
 You are a weekly documentation-accuracy pass for the Hyperpocket platform. Keep CLAUDE.md and core docs ACCURATE and LEAN — do not rewrite them. Every change is reviewed via PR; you NEVER merge.
@@ -47,9 +47,9 @@ For each repo with real issues:
 
 Also list (do NOT edit) any other *.md you noticed looks stale, so a human can decide — never silently expand scope.
 
-OPTIONAL — post a summary to chat as the LAST step (drop if no webhook):
+POST a summary to Slack as the LAST step:
    curl -s -X POST -H 'Content-type: application/json' \
      --data "$(jq -n --arg t "$SUMMARY" '{text:$t}')" \
-     <DEV_DIGEST_WEBHOOK>
+     <DEV_DIGEST_SLACK_WEBHOOK>
 Prefix with "*Hyperpocket weekly docs audit*" and include the PR links opened (or "no changes needed this week").
 ```

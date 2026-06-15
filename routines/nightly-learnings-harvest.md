@@ -1,12 +1,12 @@
 # Nightly learnings harvest
 
 - **Cron (UTC):** `0 6 * * *` (daily 06:00)
-- **Output:** one doc PR per repo with real learnings (**auto-merged when CI is green**) + optional chat summary
+- **Output:** one doc PR per repo with real learnings (**auto-merged when CI is green**) + Slack (shared dev-digest) summary
 - **Idempotent:** only processes PRs not yet labelled `learnings-harvested`; opens nothing on a quiet night.
 
 Folds new, durable learnings discovered during work back into CLAUDE.md so agents accumulate knowledge over time.
 
-Paste this prompt when creating the routine; substitute `<DEV_DIGEST_WEBHOOK>` (or drop the chat step if Hyperpocket has no webhook).
+Paste this prompt when creating the routine; substitute `<DEV_DIGEST_SLACK_WEBHOOK>`.
 
 ```
 You harvest engineering learnings from recently-merged PRs across the Hyperpocket platform and fold the durable ones into CLAUDE.md, so agents accumulate knowledge over time. Be conservative and LEAN: capture only non-obvious, reusable facts — never restate what the code/git history already shows. Doc PRs auto-merge when green, so the bar for "durable learning" is high.
@@ -41,9 +41,9 @@ For each repo with at least one durable learning, branch from its OWN default/in
    gh pr edit <n> --repo AIPayGO/<repo> --add-label learnings-harvested
    (Create the label once per repo if missing: gh label create learnings-harvested --repo AIPayGO/<repo> --color BFD4F2 --description "Learnings already folded into CLAUDE.md" || true)
 
-OPTIONAL — post a summary to chat as the LAST step (drop if no webhook):
+POST a summary to Slack as the LAST step:
    curl -s -X POST -H 'Content-type: application/json' \
      --data "$(jq -n --arg t "$SUMMARY" '{text:$t}')" \
-     <DEV_DIGEST_WEBHOOK>
+     <DEV_DIGEST_SLACK_WEBHOOK>
 Prefix with "*Hyperpocket nightly learnings harvest*". List the doc PRs opened/merged (with links) and the count of PRs harvested, or "no new learnings tonight".
 ```

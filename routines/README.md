@@ -9,5 +9,6 @@ Version-controlled prompts for scheduled **cloud agents** (claude.ai/code → Ro
 | Routine | File | Cron (UTC) | Output | Attended? |
 |---|---|---|---|---|
 | Nightly learnings harvest | [`nightly-learnings-harvest.md`](nightly-learnings-harvest.md) | `0 6 * * *` (daily 06:00) | PRs (auto-merged) + chat summary | No |
+| Weekly docs audit | [`weekly-docs-audit.md`](weekly-docs-audit.md) | `0 9 * * 5` (Fri 09:00) | PRs + chat summary | Review the PRs |
 
-The nightly harvest keeps CLAUDE.md *complete*: it folds new learnings recorded in merged PRs into the docs so agents get smarter over time. See the canonical workflow ("Shipping & Learning Capture") in [`../templates/monorepo-CLAUDE.md`](../templates/monorepo-CLAUDE.md).
+The two docs routines are complementary: the **nightly harvest** keeps CLAUDE.md *complete* (folds new learnings from merged PRs into the docs so agents get smarter over time; auto-merges its doc PR when green), and the **weekly audit** keeps it *accurate and lean* (staleness / contradictions / duplication; never merges — you review its PRs). Keep both. See the canonical workflow ("Shipping & Learning Capture") in [`../templates/monorepo-CLAUDE.md`](../templates/monorepo-CLAUDE.md).

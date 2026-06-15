@@ -12,6 +12,11 @@ This workspace contains three independent git repositories:
 
 The workspace root is **not** a git repo. Each sub-folder is its own repo with its own history.
 
+## Environment Notes
+
+- zsh: quote glob args in `grep`/`find` (`--include='*.ts'`) — unquoted globs fail with "no matches found".
+- Multiple agent sessions may run concurrently on these repos — `git fetch` before assuming local branches reflect the remote.
+
 ## AI Agent Setup
 
 This workspace uses `hyperpocket-dev-kit` for shared slash commands and plugin configuration.

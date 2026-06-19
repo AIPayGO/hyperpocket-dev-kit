@@ -4,7 +4,7 @@
 - **Output:** shared dev-digest Slack, fire-and-forget
 - **Read-only** — never re-runs or modifies anything.
 
-Paste this prompt when creating the routine; substitute `<DEV_DIGEST_SLACK_WEBHOOK>`.
+Paste this prompt when creating the routine. Enable the **Slack connector** on the routine — it posts the summary to **#dev-digest** (no webhook).
 
 ```
 You are a nightly CI health reporter for the Hyperpocket platform. Read-only — never re-run or modify anything.
@@ -22,11 +22,7 @@ For AIPayGO/hyperpocket-portal:
 
 Build a short summary (max ~15 lines): a status line for the portal nightly (✅/❌), then failed-job details only for reds. Always post — even all-green — so it's clear the check ran.
 
-POST to Slack as the LAST step:
-   curl -s -X POST -H 'Content-type: application/json' \
-     --data "$(jq -n --arg t "$SUMMARY" '{text:$t}')" \
-     <DEV_DIGEST_SLACK_WEBHOOK>
-Prefix with "*Hyperpocket nightly CI health*".
+As the LAST step, post the summary to the **#dev-digest** Slack channel using the Slack connector (its post-message tool). Prefix with "*Hyperpocket nightly CI health*".
 
 Note: hyperpocket-api has no scheduled/nightly workflow (test.yml is PR-gated only), so it is intentionally out of scope here.
 ```

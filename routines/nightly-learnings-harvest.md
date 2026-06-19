@@ -6,7 +6,7 @@
 
 Folds new, durable learnings discovered during work back into CLAUDE.md so agents accumulate knowledge over time.
 
-Paste this prompt when creating the routine; substitute `<DEV_DIGEST_SLACK_WEBHOOK>`.
+Paste this prompt when creating the routine. Enable the **Slack connector** on the routine — it posts the summary to **#dev-digest** (no webhook).
 
 ```
 You harvest engineering learnings from recently-merged PRs across the Hyperpocket platform and fold the durable ones into CLAUDE.md, so agents accumulate knowledge over time. Be conservative and LEAN: capture only non-obvious, reusable facts — never restate what the code/git history already shows. Doc PRs auto-merge when green, so the bar for "durable learning" is high.
@@ -41,9 +41,5 @@ For each repo with at least one durable learning, branch from its OWN default/in
    gh pr edit <n> --repo AIPayGO/<repo> --add-label learnings-harvested
    (Create the label once per repo if missing: gh label create learnings-harvested --repo AIPayGO/<repo> --color BFD4F2 --description "Learnings already folded into CLAUDE.md" || true)
 
-POST a summary to Slack as the LAST step:
-   curl -s -X POST -H 'Content-type: application/json' \
-     --data "$(jq -n --arg t "$SUMMARY" '{text:$t}')" \
-     <DEV_DIGEST_SLACK_WEBHOOK>
-Prefix with "*Hyperpocket nightly learnings harvest*". List the doc PRs opened/merged (with links) and the count of PRs harvested, or "no new learnings tonight".
+As the LAST step, post a summary to the **#dev-digest** Slack channel using the Slack connector (its post-message tool). Prefix with "*Hyperpocket nightly learnings harvest*". List the doc PRs opened/merged (with links) and the count of PRs harvested, or "no new learnings tonight".
 ```

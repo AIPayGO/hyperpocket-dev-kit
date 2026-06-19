@@ -61,11 +61,7 @@ GUARDRAILS (hard):
 - NEVER merge on red CI, and never bypass a required gate.
 - If no meaningful gap exists this week, post "coverage clean — no action" and stop.
 
-Post a one-line outcome to Slack as the LAST step, either way:
-   curl -s -X POST -H 'Content-type: application/json' \
-     --data "$(jq -n --arg t "$SUMMARY" '{text:$t}')" \
-     <DEV_DIGEST_SLACK_WEBHOOK>
-Prefix with "*Hyperpocket coverage guardian*".
+As the LAST step, post a one-line outcome to the **#dev-digest** Slack channel using the Slack connector (either way). Prefix with "*Hyperpocket coverage guardian*".
 ```
 
 ---

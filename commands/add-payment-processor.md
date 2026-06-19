@@ -76,7 +76,7 @@ interface <Name>ProcessorConfig {
 Retrieve the processor in a route handler:
 
 ```typescript
-const processor = await ProcessorFactory.forProduct(productCode, db);
+const processor = await ProcessorFactory.getProcessorForProduct(productCode);
 ```
 
 ### Vault Token Routing

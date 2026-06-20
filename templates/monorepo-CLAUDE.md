@@ -74,7 +74,7 @@ Ship every non-trivial change the same way, on every machine — only the *promo
    - `hyperpocket-api` → merge to `uat`, then tag `vX.Y.Z-rc.N` (→ staging) and `vX.Y.Z` (→ prod). Merging `uat` does **not** deploy.
    - `hyperpocket-portal` → merge to `staging` (Cloudflare Pages auto-deploys).
    - `hyperpocket-infra` → merge to `main` (CI runs `tf-apply`).
-5. **Record durable learnings in the PR description** under a `## Learnings for CLAUDE.md` section (the PR template seeds it; default `None`). Capture only non-obvious, reusable facts — the same bar as a CLAUDE.md edit — naming the file/area each belongs in. The nightly learnings-harvest routine (`hyperpocket-dev-kit/routines/`) folds these into the docs automatically, so this section *is* how knowledge compounds. Leave it `None` rather than padding it.
+5. **Record durable learnings in the PR description** under a `## Learnings for CLAUDE.md` section (the PR template seeds it; default `None`). Capture only non-obvious, reusable facts — the same bar as a CLAUDE.md edit — naming the file/area each belongs in. The nightly learnings-harvest routine (`hyperpocket-dev-kit/routines/`) folds these into the docs automatically, so this section *is* how knowledge compounds. Default to capturing — fill it as part of finishing the PR from the gotchas you actually hit; write `None` ONLY for a genuinely trivial change (the anti-padding bar still applies — no routine notes).
 
 ### Testing
 

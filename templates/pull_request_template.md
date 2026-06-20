@@ -16,10 +16,12 @@ the "Learnings for CLAUDE.md" section below.
 ## Learnings for CLAUDE.md
 
 <!--
-Durable, non-obvious, reusable facts a future agent would otherwise re-discover
-the hard way — the same bar as editing CLAUDE.md. One bullet each, naming the
-file/area it belongs in. NOT routine feature notes or anything already obvious
-from the diff. Leave as "None" rather than padding.
+Did this PR teach you something a future agent would otherwise re-discover the hard way?
+Scan: a non-obvious bug cause · a contract / field-name / response-shape change ·
+a test / mock / seed / FK / migration trap · a naming or config pitfall.
+For each, write ONE bullet: the gotcha + the target file/area it belongs in (e.g. `.claude/rules/x.md`).
+Same bar as editing CLAUDE.md — not routine feature notes or anything obvious from the diff.
+Default to capturing; write "None" ONLY when the change was genuinely trivial.
 -->
 
-- None
+-

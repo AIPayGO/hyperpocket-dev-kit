@@ -16,10 +16,14 @@ the "Learnings for CLAUDE.md" section below.
 ## Learnings for CLAUDE.md
 
 <!--
-Durable, non-obvious, reusable facts a future agent would otherwise re-discover
-the hard way — the same bar as editing CLAUDE.md. One bullet each, naming the
-file/area it belongs in. NOT routine feature notes or anything already obvious
-from the diff. Leave as "None" rather than padding.
+Before writing this, actually scan — don't reflexively type None:
+  · a non-obvious bug cause   · a contract / field-name / response-shape change
+  · a test / mock / seed / FK / migration trap   · a naming or config pitfall
+Capture ONLY what clears the bar: non-obvious + reusable + would otherwise be
+re-discovered the hard way (same bar as editing CLAUDE.md), naming the target
+file/area (e.g. `.claude/rules/x.md`).
+"None" is a fine and common answer for routine PRs — the failure mode is typing
+None WITHOUT checking, not None itself. Never pad with the obvious-from-the-diff.
 -->
 
-- None
+-

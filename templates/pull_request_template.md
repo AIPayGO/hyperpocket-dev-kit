@@ -16,12 +16,14 @@ the "Learnings for CLAUDE.md" section below.
 ## Learnings for CLAUDE.md
 
 <!--
-Did this PR teach you something a future agent would otherwise re-discover the hard way?
-Scan: a non-obvious bug cause · a contract / field-name / response-shape change ·
-a test / mock / seed / FK / migration trap · a naming or config pitfall.
-For each, write ONE bullet: the gotcha + the target file/area it belongs in (e.g. `.claude/rules/x.md`).
-Same bar as editing CLAUDE.md — not routine feature notes or anything obvious from the diff.
-Default to capturing; write "None" ONLY when the change was genuinely trivial.
+Before writing this, actually scan — don't reflexively type None:
+  · a non-obvious bug cause   · a contract / field-name / response-shape change
+  · a test / mock / seed / FK / migration trap   · a naming or config pitfall
+Capture ONLY what clears the bar: non-obvious + reusable + would otherwise be
+re-discovered the hard way (same bar as editing CLAUDE.md), naming the target
+file/area (e.g. `.claude/rules/x.md`).
+"None" is a fine and common answer for routine PRs — the failure mode is typing
+None WITHOUT checking, not None itself. Never pad with the obvious-from-the-diff.
 -->
 
 -

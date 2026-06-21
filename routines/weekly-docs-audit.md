@@ -23,13 +23,14 @@ A) hyperpocket-dev-kit:
    - templates/monorepo-CLAUDE.md  ← this IS the canonical workspace-root CLAUDE.md. The live workspace root is a COPY of it; there is no separate root repo.
    - README.md, REQUIRED_PLUGINS.md
    - commands/add-api-endpoint.md, commands/add-payment-processor.md, commands/new-portal-page.md
-B) each service repo: its CLAUDE.md, plus README.md / RUNBOOK.md if present.
+B) each service repo: its CLAUDE.md, plus README.md / RUNBOOK.md if present, plus any .claude/rules/*.md (none exist today — include them automatically once a repo starts using rules files).
 
 For every file, find ONLY high-confidence problems — verify against the actual repo before flagging:
 1. Staleness: a documented path, script, env var, port, or workflow file that no longer exists.
 2. Internal contradictions: two sections that disagree.
 3. Duplication: the same instruction repeated — consolidate to one.
 4. Broken references: links/paths/filenames that don't resolve.
+5. Redundancy / capability-compensating content: a note that exists only to hand-hold a weaker model — generic best-practice ("use strict mode", "avoid any", generic git explanations), over-narrated workflow, or anything a competent engineer/model would do by default. Propose REMOVING these. CRITICAL distinction: only cut content DERIVABLE from the repo + general knowledge. NEVER cut project-specific facts (ports 3006/5175/5433, HOSTED_PAYMENT_URL/host-alias gotchas, the WALLET_PRODUCT_SECRET↔webhook-secret match, Braintree re-vault behaviour, deploy/branch mechanics) — those stay regardless of how capable the model is. If you cannot clearly classify a line as generic vs project-specific, leave it and list it under NEEDS HUMAN DECISION rather than removing it.
 
 DEV-KIT–SPECIFIC checks (scripts/setup.mjs is the source of truth):
 - REQUIRED_PLUGINS.md must match the `plugins` array in setup.mjs (names + count). Flag any mismatch.

@@ -25,7 +25,10 @@ For EACH repo:
 3. Decide what is DURABLE (belongs in CLAUDE.md) vs one-off (ignore):
    - Durable: a future agent would repeat the mistake without it. Non-obvious. Stable.
    - One-off: specific to that change, already obvious from the code, or restates a test.
-   Resolve which CLAUDE.md it belongs in (the per-repo CLAUDE.md, or the workspace root) and the right section.
+   Resolve WHERE it belongs:
+   - Cross-cutting / setup / deploy / config facts → CLAUDE.md (the per-repo CLAUDE.md, or the workspace root template) and the right section.
+   - DOMAIN-SPECIFIC depth (a payments/Braintree quirk, a webhook gotcha, a testing pattern) → the matching service .claude/rules/<area>.md if one exists. Keep CLAUDE.md lean; rules files load contextually and are the right home for detail. (Hyperpocket repos have no rules files yet — so today this means either keep it in CLAUDE.md, or propose the FIRST rule file via the new-file path below.)
+   - If a learning is domain-specific but NO existing rule file fits, you MAY create a new .claude/rules/<area>.md for it — but a new file is a structural change: see the new-file EXCEPTION under AUTO-MERGE below.
    IMPORTANT — the canonical workspace-root CLAUDE.md is hyperpocket-dev-kit/templates/monorepo-CLAUDE.md; the live workspace root is a COPY of it. Edit the TEMPLATE, never a stray root copy.
 
 For each repo with at least one durable learning, branch from its OWN default/integration branch (api: uat, portal: staging, infra & dev-kit: main/master):
@@ -37,6 +40,7 @@ For each repo with at least one durable learning, branch from its OWN default/in
    - This is a DOCS-ONLY change — it does not deploy, so target the integration branch directly (no rc/release tag needed). AUTO-MERGE once checks pass:
        gh pr merge <pr-url> --auto --squash --delete-branch
      If the repo has no required checks and the PR is already mergeable, merge directly (drop --auto). Never force-merge a failing/conflicting PR — leave it open and flag it.
+     EXCEPTION: if the PR CREATES a new .claude/rules/*.md file, do NOT enable auto-merge — a new rule file is structural. Open it for human review, note "creates new rule file" under NEEDS HUMAN DECISION in the body, and flag it in Slack. Additive edits to an EXISTING CLAUDE.md or rule file auto-merge as normal.
 4. Label EVERY candidate PR you processed (whether or not it yielded a learning) so it is never re-harvested:
    gh pr edit <n> --repo AIPayGO/<repo> --add-label learnings-harvested
    (Create the label once per repo if missing: gh label create learnings-harvested --repo AIPayGO/<repo> --color BFD4F2 --description "Learnings already folded into CLAUDE.md" || true)

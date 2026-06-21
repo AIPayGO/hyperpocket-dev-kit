@@ -6,7 +6,7 @@ This is the same set Fairyde runs (see `fairyde-dev-kit/routines/`), adapted to 
 
 **Conventions:**
 - Crons are **UTC** (the cloud scheduler uses UTC; GitHub's own scheduled runs drift up to ~1h).
-- All routines post their summary to the **shared #dev-digest** Slack channel via the **Slack connector** (claude.ai/customize/connectors — no incoming webhook). Enable the Slack connector on each routine when you create it. (The old `<DEV_DIGEST_SLACK_WEBHOOK>` incoming webhook is retired — delete it in Slack.)
+- All routines post their summary to the **shared #dev-digest** Slack channel via the **claude-bot Incoming Webhook**, so the sender shows as **claude-bot**, not your personal account. Do NOT enable the Slack connector on these routines (the connector posts as *you*). Each routine prompt contains a `<DEV_DIGEST_WEBHOOK_URL>` placeholder — paste the real claude-bot webhook URL into the cloud routine in the claude.ai UI; **never commit the real URL to this repo** (it is a secret — anyone with it can post to the channel). It's the same webhook Fairyde uses (same channel).
 - **Hyperpocket and Fairyde share that channel**, so every message is **prefixed with `*Hyperpocket <routine>*`** (Fairyde's are prefixed `*Fairyde …*`) to keep them distinguishable.
 - Read-only except the two docs routines and the coverage guardian, which open PRs. The **weekly docs audit** never merges (you review its PRs); the **nightly learnings harvest** auto-merges its docs-only PR once CI is green; the **coverage guardian** self-merges on green CI (you can start it in PR-only mode — see its file).
 

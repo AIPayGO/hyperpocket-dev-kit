@@ -6,7 +6,7 @@
 
 The accuracy/prune counterpart to the nightly learnings harvest: the harvest *adds* knowledge, this keeps the docs *accurate and lean*. Keep both.
 
-Paste this prompt when creating the routine. Enable the **Slack connector** on the routine — it posts the summary to **#dev-digest** (no webhook).
+Paste this prompt when creating the routine. It posts to **#dev-digest** via the **claude-bot Incoming Webhook** (so the sender is claude-bot, not you) — do NOT enable the Slack connector. In the cloud routine, replace the `<DEV_DIGEST_WEBHOOK_URL>` placeholder in the prompt with the real claude-bot webhook URL (never commit the real URL).
 
 ```
 You are a weekly documentation-accuracy pass for the Hyperpocket platform. Keep CLAUDE.md and core docs ACCURATE and LEAN — do not rewrite them. Every change is reviewed via PR; you NEVER merge.
@@ -48,5 +48,9 @@ For each repo with real issues:
 
 Also list (do NOT edit) any other *.md you noticed looks stale, so a human can decide — never silently expand scope.
 
-As the LAST step, post a summary to the **#dev-digest** Slack channel using the Slack connector (its post-message tool). Prefix with "*Hyperpocket weekly docs audit*" and include the PR links opened (or "no changes needed this week").
+As the LAST step, post a summary to **#dev-digest** via the claude-bot Incoming Webhook (do NOT use the Slack connector), prefixed with "*Hyperpocket weekly docs audit*", including the PR links opened (or "no changes needed this week"). Write the summary as Slack mrkdwn to /tmp/digest.txt, then run:
+  WEBHOOK="<DEV_DIGEST_WEBHOOK_URL>"
+  python3 -c 'import json;print(json.dumps({"text":open("/tmp/digest.txt").read()}))' > /tmp/digest.json
+  curl -sS -X POST -H "Content-type: application/json" --data @/tmp/digest.json "$WEBHOOK"
+A response body of "ok" means it posted as claude-bot; on anything else, report it and do not blind-retry.
 ```

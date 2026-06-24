@@ -145,7 +145,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 
 ### Type Checking Note
 
-Run `pnpm check` before committing. There are ~44 pre-existing type errors in the repo — only fix errors introduced by your changes.
+Run `pnpm check` before committing. `pnpm check` is a hard CI gate and must stay at 0 errors — fix any errors your changes introduce.
 
 Use `ReturnType<typeof setTimeout>` (not `window.setTimeout`) for timer types.
 

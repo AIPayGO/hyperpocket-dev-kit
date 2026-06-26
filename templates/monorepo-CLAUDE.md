@@ -44,7 +44,7 @@ Never treat these as equal. Withdrawals check `availableBalance`, not `balance`.
 ### Payment Processor Pattern
 
 - Credentials stored as JSONB per product in the DB — never returned in API responses
-- `ProcessorFactory.forProduct(productCode, db)` returns the correct processor instance
+- `ProcessorFactory.getProcessorForProduct(productCode)` returns the correct processor instance
 - Vault tokens (saved cards) are identified server-side via `isVaultToken` flag — never trust client input
 
 ### Product SOA
@@ -130,7 +130,7 @@ All developers should have these plugins enabled (see `REQUIRED_PLUGINS.md`):
 - Key scripts: `pnpm dev`, `pnpm build`, `pnpm check`
 - API calls: server-side only (`+page.server.ts`, `+server.ts`) — never from browser
 - Env vars: `WALLET_API_URL`, `WALLET_API_KEY` (Cloudflare Pages secrets)
-- Logging: `@logtail/js` imported as `Browser` — flush before worker terminates
+- Logging: `@logtail/browser` (`import { Logtail }`) — never `@logtail/js`; flush before worker terminates
 - Timer types: `ReturnType<typeof setTimeout>` not `window.setTimeout`
 
 ### hyperpocket-infra
@@ -147,7 +147,7 @@ All developers should have these plugins enabled (see `REQUIRED_PLUGINS.md`):
 
 Each service repo is independent. There is no cross-repo commit linking.
 
-- `hyperpocket-api` → branch `uat` → deploys to staging EC2 via PM2
+- `hyperpocket-api` → branch `uat` (integration; merging does **not** deploy) → tag `vX.Y.Z-rc.N` → staging, tag `vX.Y.Z` → prod (runs on EC2 via PM2)
 - `hyperpocket-portal` → branch `staging` → auto-deploys to Cloudflare Pages (`hyperpocket-staging`)
 - `hyperpocket-infra` → branch `main` → CI applies on merge
 

@@ -1,0 +1,29 @@
+# Push this repo's changed markdown into the Agentic World knowledge index.
+#
+# Agentic World has no clones and no git credentials — deliberately, so that
+# one host does not hold write access to every codebase. It can never pull, so
+# its index only learns about a merge when a machine that HAS the files pushes
+# them. That machine is this runner.
+#
+# Before this existed, every write to that index was a human running `kb push`
+# by hand, and most of the corpus was weeks stale as a result.
+#
+# The job definition lives in AIPayGO/agentic-world so there is one copy of it.
+# Secrets required on this repo: AW_URL, AW_USER, AW_PASS, AW_TOKEN,
+# AW_TOOLING_TOKEN. See docs/indexing-service-repo-docs.md in agentic-world.
+name: Index docs in Agentic World
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  push-docs:
+    uses: AIPayGO/agentic-world/.github/workflows/aw-index-docs.yml@main
+    secrets:
+      AW_URL: ${{ secrets.AW_URL }}
+      AW_USER: ${{ secrets.AW_USER }}
+      AW_PASS: ${{ secrets.AW_PASS }}
+      AW_TOKEN: ${{ secrets.AW_TOKEN }}
+      AW_TOOLING_TOKEN: ${{ secrets.AW_TOOLING_TOKEN }}

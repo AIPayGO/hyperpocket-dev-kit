@@ -70,9 +70,9 @@ Ship every non-trivial change the same way, on every machine — only the *promo
 1. Work on a feature branch (never hand-push to a deploy branch).
 2. Open a PR into the repo's integration branch and let CI gate it.
 3. **Verify on staging** before promoting to production.
-4. **Promote using that repo's strategy:**
-   - `hyperpocket-api` → merge to `uat`, then tag `vX.Y.Z-rc.N` (→ staging) and `vX.Y.Z` (→ prod). Merging `uat` does **not** deploy.
-   - `hyperpocket-portal` → merge to `staging` (Cloudflare Pages auto-deploys).
+4. **Promote using that repo's strategy** (governing principle: **verify the SHA you ship** — the commit validated on staging/RC must be the *same* commit promoted to prod; don't promote by re-merging a different merge into the prod branch, and don't let `uat`/`staging` accumulate divergent work you then "merge up"):
+   - `hyperpocket-api` → merge to `uat` (integration branch; merging `uat` does **not** deploy). Deploy is tag-based: tag `vX.Y.Z-rc.N` → staging, then re-tag the *same blessed commit* `vX.Y.Z` → prod. Both gate on the full test suite first (`deploy.yml needs: test`).
+   - `hyperpocket-portal` → merge to `staging` → `hyperpocket-staging` CF Pages (the **verify env** — preview deployments are disabled on the payments portal). Promote by merging the **same staging-verified commit** to `main` → `hyperpocket-prod` CF Pages.
    - `hyperpocket-infra` → merge to `main` (CI runs `tf-apply`).
 5. **Record durable learnings in the PR description** under a `## Learnings for CLAUDE.md` section (the PR template seeds it; default `None`). Capture only non-obvious, reusable facts — the same bar as a CLAUDE.md edit — naming the file/area each belongs in. The nightly learnings-harvest routine (`hyperpocket-dev-kit/routines/`) folds these into the docs automatically, so this section *is* how knowledge compounds. Do not reflexively default to `None` — scan for real, non-obvious learnings first; capture only what clears the bar (no padding). `None` is correct and common for a routine PR.
 
@@ -147,8 +147,8 @@ All developers should have these plugins enabled (see `REQUIRED_PLUGINS.md`):
 
 Each service repo is independent. There is no cross-repo commit linking.
 
-- `hyperpocket-api` → branch `uat` → deploys to staging EC2 via PM2
-- `hyperpocket-portal` → branch `staging` → auto-deploys to Cloudflare Pages (`hyperpocket-staging`)
+- `hyperpocket-api` → PRs merge to `uat` (integration; merging `uat` does **not** deploy). Deploy is **tag-based** (test-gated): `vX.Y.Z-rc.N` → staging EC2, `vX.Y.Z` (same commit) → prod EC2, via PM2.
+- `hyperpocket-portal` → branch `staging` → `hyperpocket-staging` CF Pages; branch `main` → `hyperpocket-prod` CF Pages. Previews disabled.
 - `hyperpocket-infra` → branch `main` → CI applies on merge
 
 Do not push to any service branch without explicit confirmation from the user.

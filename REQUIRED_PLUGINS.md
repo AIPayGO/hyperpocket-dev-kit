@@ -21,7 +21,7 @@ All Hyperpocket developers should have these plugins enabled in Claude Code.
 | Plugin | Source | Purpose |
 |--------|--------|---------|
 | `impeccable` | `pbakaus/impeccable` | UI quality audit — catches AI design anti-patterns; use `/audit`, `/polish`, `/critique` before shipping portal changes |
-| `ui-ux-pro-max` | `nextlevelbuilder/ui-ux-pro-max` | 50+ UI styles, 161 color palettes, 57 font pairings — use when building new portal UI from scratch |
+| `ui-ux-pro-max` | `nextlevelbuilder/ui-ux-pro-max-skill` | 50+ UI styles, 161 color palettes, 57 font pairings — use when building new portal UI from scratch |
 
 ## This Kit
 

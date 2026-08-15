@@ -21,7 +21,7 @@ This will:
 2. Set up the local Claude Code plugin marketplace (`~/.claude/plugins/marketplaces/local/`)
 3. Clone two third-party plugins (`impeccable`, `ui-ux-pro-max`) from GitHub
 4. Link this kit as a local plugin
-5. Enable all 10 plugins in `~/.claude/settings.json`
+5. Enable all 12 plugins in `~/.claude/settings.json`
 6. Copy `templates/monorepo-CLAUDE.md` to the workspace root as `CLAUDE.md`
 
 Restart any open Claude Code session after setup.

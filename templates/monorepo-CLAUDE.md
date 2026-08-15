@@ -44,7 +44,7 @@ Never treat these as equal. Withdrawals check `availableBalance`, not `balance`.
 ### Payment Processor Pattern
 
 - Credentials stored as JSONB per product in the DB — never returned in API responses
-- `ProcessorFactory.forProduct(productCode, db)` returns the correct processor instance
+- `ProcessorFactory.getProcessorForProduct(productCode)` returns the correct processor instance
 - Vault tokens (saved cards) are identified server-side via `isVaultToken` flag — never trust client input
 
 ### Product SOA
@@ -79,7 +79,7 @@ Ship every non-trivial change the same way, on every machine — only the *promo
 ### Testing
 
 - API: Vitest integration tests in `hyperpocket-api/tests/`
-- Portal: `pnpm check` (Svelte type checking) — fix errors you introduce, not pre-existing ones
+- Portal: `pnpm check` (Svelte type checking) — a hard CI gate, must stay at 0 errors
 - Before adding a feature, confirm with the user whether tests are in scope
 
 ### Fast-Track (no plan needed)
@@ -130,7 +130,7 @@ All developers should have these plugins enabled (see `REQUIRED_PLUGINS.md`):
 - Key scripts: `pnpm dev`, `pnpm build`, `pnpm check`
 - API calls: server-side only (`+page.server.ts`, `+server.ts`) — never from browser
 - Env vars: `WALLET_API_URL`, `WALLET_API_KEY` (Cloudflare Pages secrets)
-- Logging: `@logtail/js` imported as `Browser` — flush before worker terminates
+- Logging: `import { Logtail } from "@logtail/browser"` (never `@logtail/js`) — flush before worker terminates
 - Timer types: `ReturnType<typeof setTimeout>` not `window.setTimeout`
 
 ### hyperpocket-infra

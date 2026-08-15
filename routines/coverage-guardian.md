@@ -13,6 +13,7 @@ closes the single highest-value one each week.
 **Create with:** `/schedule` (or the cloud routine UI).
 - **Cadence:** weekly — Mon 06:00 UTC, low-traffic window.
 - **Model:** opus.
+- **Slack:** posts to #dev-digest via the **claude-bot Incoming Webhook** — replace `<DEV_DIGEST_WEBHOOK_URL>` in the prompt with the real URL in the cloud routine; do NOT enable the Slack connector.
 - **Repo per run:** rotate `hyperpocket-api` → `hyperpocket-portal` (infra is Terraform —
   out of scope; it has `terraform plan` in CI, not unit tests).
 
@@ -61,7 +62,11 @@ GUARDRAILS (hard):
 - NEVER merge on red CI, and never bypass a required gate.
 - If no meaningful gap exists this week, post "coverage clean — no action" and stop.
 
-As the LAST step, post a one-line outcome to the **#dev-digest** Slack channel using the Slack connector (either way). Prefix with "*Hyperpocket coverage guardian*".
+As the LAST step, post a one-line outcome to **#dev-digest** via the claude-bot Incoming Webhook (do NOT use the Slack connector), prefixed with "*Hyperpocket coverage guardian*". Write the line as Slack mrkdwn to /tmp/digest.txt, then run:
+  WEBHOOK="<DEV_DIGEST_WEBHOOK_URL>"
+  python3 -c 'import json;print(json.dumps({"text":open("/tmp/digest.txt").read()}))' > /tmp/digest.json
+  curl -sS -X POST -H "Content-type: application/json" --data @/tmp/digest.json "$WEBHOOK"
+A response body of "ok" means it posted as claude-bot; on anything else, report it and do not blind-retry.
 ```
 
 ---

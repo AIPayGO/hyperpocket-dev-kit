@@ -6,7 +6,7 @@
 
 Folds new, durable learnings discovered during work back into CLAUDE.md so agents accumulate knowledge over time.
 
-Paste this prompt when creating the routine. Enable the **Slack connector** on the routine — it posts the summary to **#dev-digest** (no webhook).
+Paste this prompt when creating the routine. It posts to **#dev-digest** via the **claude-bot Incoming Webhook** (so the sender is claude-bot, not you) — do NOT enable the Slack connector. In the cloud routine, replace the `<DEV_DIGEST_WEBHOOK_URL>` placeholder in the prompt with the real claude-bot webhook URL (never commit the real URL).
 
 ```
 You harvest engineering learnings from recently-merged PRs across the Hyperpocket platform and fold the durable ones into CLAUDE.md, so agents accumulate knowledge over time. Be conservative and LEAN: capture only non-obvious, reusable facts — never restate what the code/git history already shows. Doc PRs auto-merge when green, so the bar for "durable learning" is high.
@@ -45,5 +45,9 @@ For each repo with at least one durable learning, branch from its OWN default/in
    gh pr edit <n> --repo AIPayGO/<repo> --add-label learnings-harvested
    (Create the label once per repo if missing: gh label create learnings-harvested --repo AIPayGO/<repo> --color BFD4F2 --description "Learnings already folded into CLAUDE.md" || true)
 
-As the LAST step, post a summary to the **#dev-digest** Slack channel using the Slack connector (its post-message tool). Prefix with "*Hyperpocket nightly learnings harvest*". List the doc PRs opened/merged (with links) and the count of PRs harvested, or "no new learnings tonight".
+As the LAST step, post a summary to **#dev-digest** via the claude-bot Incoming Webhook (do NOT use the Slack connector), prefixed with "*Hyperpocket nightly learnings harvest*"; list the doc PRs opened/merged (with links) and the count of PRs harvested, or "no new learnings tonight". Write the summary as Slack mrkdwn to /tmp/digest.txt, then run:
+  WEBHOOK="<DEV_DIGEST_WEBHOOK_URL>"
+  python3 -c 'import json;print(json.dumps({"text":open("/tmp/digest.txt").read()}))' > /tmp/digest.json
+  curl -sS -X POST -H "Content-type: application/json" --data @/tmp/digest.json "$WEBHOOK"
+A response body of "ok" means it posted as claude-bot; on anything else, report it and do not blind-retry.
 ```

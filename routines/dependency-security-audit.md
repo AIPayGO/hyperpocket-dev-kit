@@ -4,7 +4,7 @@
 - **Output:** shared dev-digest Slack, fire-and-forget
 - **Read-only** — never opens PRs or bumps versions.
 
-Paste this prompt when creating the routine. Enable the **Slack connector** on the routine — it posts the summary to **#dev-digest** (no webhook).
+Paste this prompt when creating the routine. It posts to **#dev-digest** via the **claude-bot Incoming Webhook** (so the sender is claude-bot, not you) — do NOT enable the Slack connector. In the cloud routine, replace the `<DEV_DIGEST_WEBHOOK_URL>` placeholder in the prompt with the real claude-bot webhook URL (never commit the real URL).
 
 ```
 You are a weekly dependency + security audit for the Hyperpocket platform. Work read-only — never open PRs or bump versions.
@@ -14,6 +14,10 @@ You are a weekly dependency + security audit for the Hyperpocket platform. Work 
 2. For each of the 2 pnpm services (api, portal): run `pnpm audit --json` and `pnpm outdated`. Collect: count of HIGH+CRITICAL advisories (with package + advisory title), and any dependency a FULL MAJOR version behind.
 3. For hyperpocket-infra: grep the .tf files for pinned provider versions (aws, cloudflare, etc.) and note any provider whose constraint looks stale (best-effort, no terraform init needed).
 4. Build a concise summary, max ~25 lines. Lead with a one-line verdict per service: "✅ clean" or "⚠️ N high/crit, M majors behind". Then bullet only the high/critical advisories and the major-version gaps. Do NOT list patch/minor drift.
-5. As the LAST step, post the summary to the **#dev-digest** Slack channel using the Slack connector (its post-message tool). Prefix the message with "*Hyperpocket weekly dep/security audit*".
+5. As the LAST step, post the summary to **#dev-digest** via the claude-bot Incoming Webhook (do NOT use the Slack connector), prefixed with "*Hyperpocket weekly dep/security audit*". Write the summary as Slack mrkdwn to /tmp/digest.txt, then run:
+     WEBHOOK="<DEV_DIGEST_WEBHOOK_URL>"
+     python3 -c 'import json;print(json.dumps({"text":open("/tmp/digest.txt").read()}))' > /tmp/digest.json
+     curl -sS -X POST -H "Content-type: application/json" --data @/tmp/digest.json "$WEBHOOK"
+   A response body of "ok" means it posted as claude-bot; on anything else, report it and do not blind-retry.
 If a repo fails to clone or audit, note it in the summary rather than aborting.
 ```

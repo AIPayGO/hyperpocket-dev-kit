@@ -29,7 +29,6 @@ This workspace uses `hyperpocket-dev-kit` for shared slash commands and plugin c
 
 Each service also has its own `CLAUDE.md` with deeper context — read it when working in that service.
 
-**Learning capture is automated.** Put durable, non-obvious learnings in a `## Learnings for CLAUDE.md` section of every PR description (see Shipping & Learning Capture below). The nightly learnings-harvest routine (`hyperpocket-dev-kit/routines/`) folds them into the right CLAUDE.md automatically (auto-merging its doc PR when green), so the docs improve over time without a manual step.
 
 ## Core Domain Concepts
 
@@ -74,7 +73,7 @@ Ship every non-trivial change the same way, on every machine — only the *promo
    - `hyperpocket-api` → merge to `uat` (integration branch; merging `uat` does **not** deploy). Deploy is tag-based: tag `vX.Y.Z-rc.N` → staging, then re-tag the *same blessed commit* `vX.Y.Z` → prod. Both gate on the full test suite first (`deploy.yml needs: test`).
    - `hyperpocket-portal` → merge to `staging` → `hyperpocket-staging` CF Pages (the **verify env** — preview deployments are disabled on the payments portal). Promote by merging the **same staging-verified commit** to `main` → `hyperpocket-prod` CF Pages.
    - `hyperpocket-infra` → merge to `main` (CI runs `tf-apply`).
-5. **Record durable learnings in the PR description** under a `## Learnings for CLAUDE.md` section (the PR template seeds it; default `None`). Capture only non-obvious, reusable facts — the same bar as a CLAUDE.md edit — naming the file/area each belongs in. The nightly learnings-harvest routine (`hyperpocket-dev-kit/routines/`) folds these into the docs automatically, so this section *is* how knowledge compounds. Do not reflexively default to `None` — scan for real, non-obvious learnings first; capture only what clears the bar (no padding). `None` is correct and common for a routine PR.
+5. **Keep the docs true.** If you learn something non-obvious and reusable, update the relevant `CLAUDE.md` in the same PR.
 
 ### Testing
 
@@ -138,7 +137,7 @@ All developers should have these plugins enabled (see `REQUIRED_PLUGINS.md`):
 - Tool: Terraform
 - AWS account: `535337619334`, region: `ap-southeast-1`
 - State: S3 bucket `hyperpocket-terraform-state`
-- Apply: `$env:AWS_PROFILE = "hyperpocket"; terraform apply -var-file="terraform.tfvars" -var-file="secrets.tfvars"`
+- Apply: with credentials for account `535337619334` in the environment (`AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` / `AWS_SESSION_TOKEN`), run `terraform apply -var-file="terraform.tfvars" -var-file="secrets.tfvars"`
 - DB password: `terraform output -raw db_password`
 - Cloudflare Pages secrets: managed entirely by Terraform — manual dashboard edits are wiped on next apply
 - EC2 SSH: get IP from `terraform output -raw ec2_public_ip`

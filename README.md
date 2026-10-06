@@ -86,3 +86,7 @@ hyperpocket-dev-kit/
 ├── REQUIRED_PLUGINS.md
 └── README.md
 ```
+
+## Skills
+
+- `.claude/skills/hyperpocket-local` — run and debug Hyperpocket (the payment gateway) locally: ports, `.env` traps, webhook deliveries, the sandbox fallback. Fairyde developers debugging a payment or webhook path use it too.

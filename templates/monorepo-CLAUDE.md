@@ -138,7 +138,7 @@ All developers should have these plugins enabled (see `REQUIRED_PLUGINS.md`):
 - Tool: Terraform
 - AWS account: `535337619334`, region: `ap-southeast-1`
 - State: S3 bucket `hyperpocket-terraform-state`
-- Apply: `$env:AWS_PROFILE = "hyperpocket"; terraform apply -var-file="terraform.tfvars" -var-file="secrets.tfvars"`
+- Apply: `eval "$(wi aws creds --service hyperpocket-aws-sso --export)"; terraform apply -var-file="terraform.tfvars" -var-file="secrets.tfvars"`
 - DB password: `terraform output -raw db_password`
 - Cloudflare Pages secrets: managed entirely by Terraform — manual dashboard edits are wiped on next apply
 - EC2 SSH: get IP from `terraform output -raw ec2_public_ip`

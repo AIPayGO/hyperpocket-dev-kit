@@ -3,7 +3,7 @@
 //
 // Bootstraps a Hyperpocket dev workspace from a single command:
 //   - Clones the 3 service repos (hyperpocket-api, -portal, -infra) into the workspace dir
-//   - Installs and enables 7 official Claude Code plugins (superpowers, code-review, etc.)
+//   - Installs and enables 9 official Claude Code plugins (superpowers, code-review, etc.)
 //   - Clones and enables 2 third-party plugins (impeccable, ui-ux-pro-max)
 //   - Registers and enables this kit so its slash commands work
 //   - Copies the canonical workspace-root CLAUDE.md to the workspace dir
